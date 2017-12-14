@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title%}My Profile{% endblock %}
+
+{% block main %}
+    Username: {{ user.username }} <br/>
+    Full Name: {{ user.fullName }} <br/>
+    Total Cash: {{ user.cash | number_format(2, ',', '')}} Lv.
+{% endblock main %}

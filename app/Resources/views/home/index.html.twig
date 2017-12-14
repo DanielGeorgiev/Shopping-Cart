@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block main %}
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4">
+                <h1>All Products</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-4">
+                <div class="list-group table-of-contents">
+                    {% for category in categories %}
+                        <a class="list-group-item" href="{{ path('category_view', {'slug': category.slug}) }}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                {% for product in products %}
+                    <div class="col-lg-6">
+                        <p>{{ product.name }}</p>
+                        <p>{{ product.price | number_format(2, ',', '') }} Lv.</p>
+                        <p class="small">Quantity: {{  product.quantity }}</p>
+                        <p>Category: <a href="{{ path('category_view', {'slug': product.category.slug}) }}">
+                                {{  product.category.name }}</a></p>
+                        <a href="{{ path('cart_add_product', {'id': product.id}) }}">Add to cart</a>
+                        <hr>
+                    </div>
+                {% endfor %}
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(products) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock main %}

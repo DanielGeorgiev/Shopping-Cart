@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ mainCategory.name }}{% endblock %}
+
+{% block main %}
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4">
+                <h1>{{ mainCategory.name }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-4">
+                <div class="list-group table-of-contents">
+                    <button onclick="goBack()" class="list-group-item" >Back &laquo;</button>
+                    {% for category in subCategories %}
+                        <a class="list-group-item" href="{{ path('category_view', {'slug': category.slug}) }}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                {% for product in products %}
+                    <div class="col-lg-6">
+                        <p>Name: {{ product.name }}</p>
+                        <p>Price: {{ product.price | number_format(2, ',', '') }} Lv.</p>
+                        <p>Quantity: {{  product.quantity }}</p>
+                        <p>Category: <a href="{{ path('category_view', {'slug': product.category.slug}) }}">
+                                {{  product.category.name }}</a></p>
+                        <a href="#">Add in cart</a>
+                        <hr>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block javascripts %}
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+{% endblock %}
