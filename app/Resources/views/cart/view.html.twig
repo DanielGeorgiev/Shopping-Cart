@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block main %}
+    {% if cartProducts | length > 0 %}
+        <h1>My Cart</h1>
+            <a href="{{ path('home_page') }}" title="Go back to the products" class="btn btn-primary">Continue
+                shopping</a>
+            <a href="{{ path('cart_empty') }}" title="Empty the cart" class="btn btn-danger">Empty the cart</a>
+        <hr/>
+        <form method="POST" action="{{ path('cart_checkout') }}">
+            {% for cartProduct in cartProducts %}
+                <h4>{{ cartProduct.name }} <a title="Remove the product from the cart" class="btn btn-danger"
+                                              href="{{ path('cart_product_remove', {'id': cartProduct.id}) }}">&#10007;</a>
+                </h4>
+                <h5>{{ cartProduct.description }}</h5>
+                <h5>Price: {{ cartProduct.price | number_format(2, ',', '') }} Leva</h5>
+                <hr/>
+            {% endfor %}
+            <h2>Total: <span style="color: green; font-size: 28px">{{ total | number_format(2,',','') }} Leva</span></h2>
+            <hr/>
+            <div class="well">
+                <small>!!!Write 1AGREE2BUY to confirm the order.!!!</small><br/>
+                <input placeholder="&quot;1AGREE2BUY&quot; here.." type="text" name="confirmation"/>
+                &nbsp;
+                <input type="submit" class="btn btn-success" value="Buy"/>
+            </div>
+        </form>
+    {% else %}
+        You don't have any products in your shopping cart. Go to the <a href="{{ path('home_page') }}">products</a>.
+    {% endif %}
+{% endblock %}

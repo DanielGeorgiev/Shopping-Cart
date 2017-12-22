@@ -26,15 +26,18 @@
             <div class="col-md-9">
                 {% for product in products %}
                     <div class="col-lg-6">
-                        <p>Name: {{ product.name }}</p>
-                        <p>Price: {{ product.price | number_format(2, ',', '') }} Lv.</p>
-                        <p>Quantity: {{  product.quantity }}</p>
+                        <p><b>{{ product.name }}</b></p>
+                        <p>{{ product.price | number_format(2, ',', '') }} Lv.</p>
+                        <p><small>Quantity: {{  product.quantity }}</small></p>
                         <p>Category: <a href="{{ path('category_view', {'slug': product.category.slug}) }}">
                                 {{  product.category.name }}</a></p>
-                        <a href="#">Add in cart</a>
+                        <a href="{{ path('cart_add_product', {'id': product.id}) }}" class="btn btn-primary">Add in cart</a>
                         <hr>
                     </div>
                 {% endfor %}
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(products) }}
+                </div>
             </div>
         </div>
     </div>

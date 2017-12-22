@@ -65,6 +65,11 @@ class Product
     private $category;
 
 
+    public function __toString()
+    {
+        return (string)$this->id;
+    }
+
     /**
      * Get id
      *
