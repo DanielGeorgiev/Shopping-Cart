@@ -19,7 +19,7 @@ class HomeController extends Controller
         $products = $productsRepo->findAllWithCategories();
 
         $categoriesRepo = $this->getDoctrine()->getRepository(Category::class);
-        $categories = $categoriesRepo->findAll();
+        $categories = $categoriesRepo->findAllMain();
 
         $paginator = $this->get('knp_paginator');
         $limit = 6;

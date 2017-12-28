@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title%}Admin{% endblock %}
+
+{% block main %}
+    <h1>All Users</h1>
+    <div class="col-md-2">
+        {% for user in users %}
+            <p>{{ user.username }}</p>
+            <p>{{ user.cash | number_format(2, ',', '') }}</p>
+            <p>{{ user.fullName }}</p>
+            {% if user.isAdmin %}
+                <p>Admin: Yes</p>
+            {% else %}
+                <p>Admin: No</p>
+                <a href="{{ path('user_admin_make', {'id': user.id}) }}" class="btn btn-primary">Make Admin</a>
+            {% endif %}
+            <hr/>
+        {% endfor %}
+    </div>
+    <div class="col-lg-offset-6">
+        <a href="{{ path('product_add') }}" class="btn btn-primary">Add Product</a>
+        <a href="#" class="btn btn-primary">Add Category</a>
+    </div>
+{% endblock main %}

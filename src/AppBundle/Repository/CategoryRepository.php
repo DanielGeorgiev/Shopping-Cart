@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findAll()
+    public function findAllMain()
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery('SELECT c 

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
@@ -22,7 +21,6 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-        $errors = [];
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
@@ -30,15 +28,6 @@ class UserController extends Controller
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $this->validateProccess($errors, $user);
-
-            if (count($errors) > 0){
-                return $this->render('user/register.html.twig', [
-                    'form' => $form->createView(),
-                    'errors' => $errors
-                ]);
-            }
-
             $password = $this->get('security.password_encoder')
                 ->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
@@ -56,8 +45,7 @@ class UserController extends Controller
         }
 
         return $this->render('user/register.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors
+            'form' => $form->createView()
         ]);
     }
 
@@ -75,41 +63,35 @@ class UserController extends Controller
     }
 
     /**
-     * Helper Methods
+     * @Route("/user/admin/{id}", name="user_admin_make")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function isValidEmail($str)
+    public function makeAdmin(int $id)
     {
-        return preg_match(
-            "/^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/", $str);
-    }
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+        $user = $userRepo->find($id);
 
-    public function isValidLength(?string $str, int $minLength, int $maxLength)
-    {
-        return mb_strlen($str) >= $minLength && mb_strlen($str) <= $maxLength;
-    }
-
-    public function userExists($criteria, $property)
-    {
-        $repo = $this->getDoctrine()->getRepository(User::class);
-        return $repo->findBy([$criteria => $property]);
-    }
-
-    public function validateProccess(array &$errors, User $user)
-    {
-        if (!$this->isValidEmail($user->getEmail())){
-            $errors[] = 'That is not a valid email!';
+        if ($user === null)
+        {
+            return $this->redirectToRoute('home_page');
         }
 
-        if ($this->userExists('email', $user->getEmail())){
-            $errors[] = 'There is an user with this email! Do you already have an account?';
+        if ($user->isAdmin()){
+            return $this->redirectToRoute('home_page');
         }
 
-        if (!$this->isValidLength($user->getFullName(), 4, 255)){
-            $errors[] = 'Your full name must be between 4 and 255 characters long!';
-        }
+        $em = $this->getDoctrine()->getManager();
 
-        if (!$this->isValidLength($user->getPassword(), 3, 255 )){
-            $errors[] = 'Your password must be between 3 and 255 characters long!';
-        }
+        $roleRepo = $this->getDoctrine()->getRepository(Role::class);
+        $role = $roleRepo->findOneBy(['name' => 'ROLE_ADMIN']);
+        $user->addRole($role);
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_home');
     }
 }

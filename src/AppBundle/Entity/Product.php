@@ -195,17 +195,18 @@ class Product
     /**
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug()
     {
         return $this->slug;
     }
 
     /**
-     * @param string $slug
+     * @return Product
      */
-    public function setSlug(string $slug)
+    public function setSlug()
     {
-        $this->slug = $slug;
+        $this->slug = strtolower(str_replace(' ', '-', $this->name));
+        return $this;
     }
 
 

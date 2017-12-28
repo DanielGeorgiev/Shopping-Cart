@@ -6,12 +6,16 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User
  *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity("email", message="This email is already used.")
  */
 class User implements UserInterface
 {
@@ -27,20 +31,28 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @Assert\Email()
+     * @Assert\NotBlank(message="The email field is required.")
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="The password field is required.")
+     * @Assert\Length(min="6", max="15",
+     *     minMessage="This password is too short. It should have 6 characters or more.",
+     *     maxMessage="This password is too long. It should have 15 characters or less.")
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="The full name field is required.")
+     * @Assert\Length(min="4", max="25",
+     *     minMessage="This name is too short. It should have 4 characters or more.",
+     *     maxMessage="This name is too long. It should have 25 characters or less.")
      * @ORM\Column(name="fullName", type="string", length=255)
      */
     private $fullName;

@@ -3,10 +3,10 @@
 {% block title%}Register{% endblock %}
 
 {% block main %}
-    {% for error in errors %}
-        <div class="text-danger">- {{ error }}</div>
-    {% endfor %}
     <form method="post" name="register" action="{{ path('user_register') }}">
+        {{ form_errors(form.email) }}
+        {{ form_errors(form.fullName) }}
+        {{ form_errors(form.password) }}
         Email: <input type="email" required="required" name="user[email]" /> <br/>
         Full Name: <input type="text" required="required" name="user[fullName]" /> <br/>
         Password: <input type="password" required="required" name="user[password]" /> <br/>
