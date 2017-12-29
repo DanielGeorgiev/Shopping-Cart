@@ -3,6 +3,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Product
@@ -23,6 +26,10 @@ class Product
 
     /**
      * @var string
+     * @Assert\Length(min="4", max="150",
+     *     minMessage="This product name is too short. It should have 4 characters or more.",
+     *     maxMessage="This product name is too long. It should have not more than 150 characters")
+     * @Assert\NotBlank(message="The name field is required.")
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
@@ -37,6 +44,9 @@ class Product
 
     /**
      * @var string
+     * @Assert\Length(min="10", max="255",
+     *     minMessage="This product description is too short. It should have 10 characters or more.",
+     *     maxMessage="This product description is too long. It should have not more than 255 characters")
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
@@ -44,6 +54,11 @@ class Product
 
     /**
      * @var string
+     * @Assert\Type(type="float", message="The price should be a valid number.")
+     * @Assert\Range(min="0.50", max="10000",
+     *     minMessage="The price should be at least 0.50 leva.",
+     *     maxMessage="The price should not be more than 10 000 leva.")
+     * @Assert\NotBlank(message="The price field is required.")
      *
      * @ORM\Column(name="price", type="decimal", precision=19, scale=4)
      */
@@ -51,6 +66,10 @@ class Product
 
     /**
      * @var int
+     * @Assert\NotBlank(message="The quantity field is required.")
+     * @Assert\Range(min="1", max="200",
+     *     minMessage="The quantity should be at least 1",
+     *     maxMessage="The quantity should not be more than 200.")
      *
      * @ORM\Column(name="quantity", type="integer")
      */

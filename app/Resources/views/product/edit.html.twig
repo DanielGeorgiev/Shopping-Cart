@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title%}Add Product{% endblock %}
+{% block title%}Edit Product{% endblock %}
 
 {% block main %}
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <form class="form-horizontal" action="{{ path('product_add') }}" method="POST">
+            <form class="form-horizontal" action="{{ path('product_edit', {'id': product.id}) }}" method="POST">
                 {{ form_errors(form.name) }}
                 {{ form_errors(form.description) }}
                 {{ form_errors(form.price) }}
@@ -17,7 +17,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="product_name">Name *</label>
                         <div class="col-sm-4 ">
-                            <input type="text" class="form-control" minlength="3" maxlength="255" required id="product_name" placeholder="Product Name"
+                            <input type="text" value="{{ product.name }}" class="form-control" minlength="3" maxlength="255" required id="product_name" placeholder="Product Name"
                                    name="product[name]">
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="product_desc">Description</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" minlength="10" maxlength="255" id="product_desc" placeholder="Product Description"
+                            <input type="text" value="{{ product.description }}" class="form-control" minlength="10" maxlength="255" id="product_desc" placeholder="Product Description"
                                    name="product[description]">
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="product_price">Price *</label>
                         <div class="col-sm-4 ">
-                            <input type="number" step="0.01" min="0.5" max="10000" required class="form-control" id="product_price" placeholder="Product Price"
+                            <input type="number" value="{{ product.price }}" step="0.01" min="0.5" max="10000" required class="form-control" id="product_price" placeholder="Product Price"
                                    name="product[price]">
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="product_quantity">Quantity *</label>
                         <div class="col-sm-4">
-                            <input type="number" min="1" max="200" required class="form-control" id="product_quantity" placeholder="Product Quantity"
+                            <input type="number" value="{{ product.quantity }}" min="1" max="200" required class="form-control" id="product_quantity" placeholder="Product Quantity"
                                    name="product[quantity]">
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-default" href="{{ path('home_page') }}">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Add new product</button>
+                            <button type="submit" class="btn btn-primary">Edit product</button>
                         </div>
                     </div>
 
