@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Delete Category
+{% endblock %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" action="{{ path('category_delete', {'id': category.id}) }}" method="POST">
+                <fieldset>
+                    <legend>Delete Category And The Products In It</legend>
+
+                    {{ form_errors(form.name) }}
+                    {{ form_errors(form.parent) }}
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="category_name">Name *:</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" value="{{ category.name }}" disabled class="form-control" minlength="4" maxlength="55" required id="category_name" placeholder="Category Name"
+                                   name="category[name]">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="category_parent_name">Belongs to:</label>
+                        <div class="col-sm-4">
+                            <input type="text" value="{{ ((category.parent == null) ? "None" : category.parent.name) }}" disabled class="form-control" required id="category_parent_name"
+                                   name="category[parent_name]">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('home_page') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Delete category {{ category.name }}</button>
+                        </div>
+                    </div>
+
+                    {{ form_row(form._token) }}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

@@ -18,7 +18,12 @@
             <div class="col-lg-3 col-md-3 col-sm-4">
                 <div class="list-group table-of-contents">
                     {% for category in categories %}
-                        <a class="list-group-item" href="{{ path('category_view', {'slug': category.slug}) }}">{{ category.name }}</a>
+                        <a class="list-group-item" href="{{ path('category_view', {'slug': category.slug}) }}"><b>{{ category.name }}</b></a>
+                        {% if app.user %}
+                            {% if app.user.isAdmin %}
+                                <a href="{{ path('category_delete', {'id': category.id}) }}" class="btn btn-danger">Delete {{ category.name }}</a>
+                            {% endif %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

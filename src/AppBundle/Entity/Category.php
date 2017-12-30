@@ -4,12 +4,17 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Category
  *
  * @ORM\Table(name="categories")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
+ *
+ * @UniqueEntity("name", message="Category with this name already exists.")
  */
 class Category
 {
@@ -24,6 +29,10 @@ class Category
 
     /**
      * @var string
+     * @Assert\Length(min="4", max="65",
+     *     minMessage="This category name is too short. It should have 4 characters or more.",
+     *     maxMessage="This category name is too long. It should have not more than 65 characters")
+     * @Assert\NotBlank(message="The category name field is required.")
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
@@ -99,11 +108,12 @@ class Category
     }
 
     /**
-     * @param string $slug
+     * @return Category
      */
-    public function setSlug(string $slug)
+    public function setSlug()
     {
-        $this->slug = $slug;
+        $this->slug = strtolower(str_replace(' ','-', $this->name));
+        return $this;
     }
 
     /**
@@ -125,7 +135,7 @@ class Category
     /**
      * @return ArrayCollection
      */
-    public function getProducts(): ArrayCollection
+    public function getProducts()
     {
         return $this->products;
     }

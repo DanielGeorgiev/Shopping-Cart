@@ -99,13 +99,6 @@ class CartController extends Controller
      */
     public function checkoutCart(Request $request)
     {
-        $confirmationCode = '1agree2buy';
-        $userConfirmation = strtolower($request->get('confirmation'));
-
-        if ($confirmationCode !== $userConfirmation){
-            return $this->redirectToRoute('cart_view');
-        }
-
         $currentUser = $this->getUser();
         $session = $this->get('session');
         $cartProducts = $session->get('cartProducts');
